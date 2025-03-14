@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piškvorky</title>
+    <meta http-equiv="refresh" content="2">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Piškvorky</h1>
+
+    {% if vitez %}
+        <h2>Vítěz: {{ vitez }}</h2>
+    {% else %}
+        <p>Na tahu: {{ na_tahu }}</p>
+    {% endif %}
+    
+    <!-- Herní deska -->
+    <table>
+        <tr>
+            {% for i in range(9) %}
+                {% if i % 3 == 0 and i != 0 %}
+                </tr><tr>
+                {% endif %}
+                <td>
+                    {% if deska[i] == "X" %}
+                        <img src="{{ url_for('static', filename='images/krizek.jpg') }}" alt="Křížek">
+                    {% elif deska[i] == "O" %}
+                        <img src="{{ url_for('static', filename='images/kolecko.jpg') }}" alt="Kolečko">
+                    {% elif not vitez %}
+                        <form action="{{ url_for('tah', index=i) }}" method="post">
+                            <button type="submit">Vybrat</button>
+                        </form>
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+    
+    <!-- Tlačítko pro reset -->
+    <form action="{{ url_for('reset') }}" method="get">
+        <button type="submit">Resetovat hru</button>
+    </form>
+</body>
+</html>
